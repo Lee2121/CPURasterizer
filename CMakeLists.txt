@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 4.4.2)
 project(CPURasterizer)
 
-set(CMAKE_CXX_STANDARD 23)
-
 file(GLOB_RECURSE RASTERIZER_HEADERS "include/*.hpp")
 file(GLOB_RECURSE RASTERIZER_SOURCES "source/*.cpp")
 
@@ -15,6 +13,8 @@ add_executable(CPURasterizer
 	${RASTERIZER_HEADERS}
 	${RASTERIZER_SOURCES}
 )
+
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT CPURasterizer)
 
 target_include_directories(CPURasterizer PUBLIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/include"

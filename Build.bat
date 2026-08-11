@@ -31,7 +31,8 @@ if %errorlevel% neq 0 (
 echo:
 echo Building...
 echo:
-cmake --build build --config Debug
+cd build
+cmake --build . --config Debug
 
 if %errorlevel% neq 0 (
 	echo:
@@ -40,6 +41,8 @@ if %errorlevel% neq 0 (
 	pause
 	exit /b %errorlevel%
 )
+
+start "" CPURasterizer.sln
 
 echo:
 echo Success!
