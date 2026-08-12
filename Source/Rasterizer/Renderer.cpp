@@ -2,6 +2,7 @@
 
 #include "Renderer.hpp"
 #include "Util/Memory.hpp"
+#include "Util/Validation.hpp"
 
 namespace Rasterizer
 {
@@ -16,7 +17,10 @@ namespace Rasterizer
 	}
 
 	void Draw(const FImageView& ColorBuffer, const FDrawCommand& Command)
-	{  	
+	{
+		bool Test = false;
+		ENSURE(Test == true, "Test must be true");
+
 		// Loop through groups of three vertices that make up a triangle without overshooting
 		for (uint32_t VertexIndex = 0; VertexIndex + 2 < Command.Mesh.VertexCount; VertexIndex += 3)
 		{
@@ -26,6 +30,7 @@ namespace Rasterizer
 
 			float Determinant012 = Determinant2D(v1 - v0, v2 - v0);
 			const bool bIsCounterClockwise = Determinant012 < 0.f;
+
 			if (bIsCounterClockwise)
 			{
 				Memory::Swap(v1, v2);
@@ -44,9 +49,9 @@ namespace Rasterizer
 			xMax = Math::Min<int32_t>(xMax, ColorBuffer.Width);
 			yMax = Math::Min<int32_t>(yMax, ColorBuffer.Height);
 
-			for (uint32_t y = yMin; y < yMax; y++)
+			for (int32_t y = yMin; y < yMax; y++)
 			{
-				for (uint32_t x = xMin; x < xMax; x++)
+				for (int32_t x = xMin; x < xMax; x++)
 				{
 					FVector4f Point {x + 0.5f, y + 0.5f, 0.f, 0.f};
 

@@ -7,5 +7,5 @@
 namespace Rasterizer
 {
 	void Clear(const FImageView& ColorBuffer, const FVector4f& Color);
-	void Draw(const FImageView& ColorBuffer, const FDrawCommand& Command);
+	void Draw(const FImageView& ColorBuffer, const FDrawCommand& Command);	
 }
