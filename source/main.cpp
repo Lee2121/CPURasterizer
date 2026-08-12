@@ -1,5 +1,8 @@
 #include <SDL3/SDL.h>
 
+#include <chrono>
+#include <iostream>
+
 #include "rasterizer/renderer.hpp"
 
 using namespace Rasterizer;
@@ -17,9 +20,13 @@ int main()
 	float MouseX = 0;
 	float MouseY = 0;
 
+	using Clock = std::chrono::high_resolution_clock;
+	auto LastFrameStart = Clock::now();
+
 	bool bRunning = true;
 	while (bRunning)
 	{
+		// Handle SDL Events
 		for (SDL_Event Event; SDL_PollEvent(&Event);)
 		{
 			switch (Event.type)
@@ -52,6 +59,12 @@ int main()
 			}
 		}
 
+		auto Now = Clock::now();
+		float dt = std::chrono::duration_cast<std::chrono::duration<float>>(Now - LastFrameStart).count();
+		LastFrameStart = Now;
+		std::cout << dt << std::endl;
+
+		// If we're still running after handling SDL events, render the frame
 		if (bRunning)
 		{
 			DrawSurface = SDL_CreateSurface(width, height, SDL_PIXELFORMAT_ABGR32);
