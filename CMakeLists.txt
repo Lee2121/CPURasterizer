@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.4.2)
+cmake_minimum_required(VERSION 3.5)
 project(CPURasterizer)
 
 file(GLOB_RECURSE RASTERIZER_HEADERS "source/*.hpp")

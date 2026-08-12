@@ -24,10 +24,10 @@ namespace Rasterizer
 	inline FColor4UB Vector4fToColor4UB(const FVector4f& c)
 	{
 		FColor4UB Result;
-		Result.r = Math::max(0.f, Math::min(255.f, c.x * 255.f));
-		Result.g = Math::max(0.f, Math::min(255.f, c.y * 255.f));
-		Result.b = Math::max(0.f, Math::min(255.f, c.z * 255.f));
-		Result.a = Math::max(0.f, Math::min(255.f, c.w * 255.f));
+		Result.r = static_cast<uint8_t>(Math::Max(0.f, Math::Min(255.f, c.x * 255.f)));
+		Result.g = static_cast<uint8_t>(Math::Max(0.f, Math::Min(255.f, c.y * 255.f)));
+		Result.b = static_cast<uint8_t>(Math::Max(0.f, Math::Min(255.f, c.z * 255.f)));
+		Result.a = static_cast<uint8_t>(Math::Max(0.f, Math::Min(255.f, c.w * 255.f)));
 		return Result;
 	}
 }

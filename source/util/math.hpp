@@ -3,14 +3,14 @@
 namespace Math
 {
 	template <typename T>
-	inline T min(T x, T y)
+	constexpr T Min(const T& a, const T& b)
 	{
-		return (x <= y) ? x : y;
+		return (b < a) ? b : a;
 	}
 
 	template <typename T>
-	inline T max(T x, T y)
+	constexpr T Max(const T& a, const T& b)
 	{
-		return (x >= y) ? x : y;
+		return (b > a) ? b : a;
 	}
 }

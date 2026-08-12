@@ -14,8 +14,8 @@ int main()
 	SDL_Window* Window = SDL_CreateWindow("CPU Rasterizer", width, height, SDL_WINDOW_RESIZABLE);
 	SDL_Surface* DrawSurface = nullptr;
 
-	int MouseX = 0;
-	int MouseY = 0;
+	float MouseX = 0;
+	float MouseY = 0;
 
 	bool bRunning = true;
 	while (bRunning)
