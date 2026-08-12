@@ -3,7 +3,7 @@
 #include <chrono>
 #include <iostream>
 
-#include "rasterizer/renderer.hpp"
+#include "Rasterizer/Renderer.hpp"
 
 using namespace Rasterizer;
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include "util/math.hpp"
+#include "Util/Math.hpp"
 
 namespace Rasterizer
 {

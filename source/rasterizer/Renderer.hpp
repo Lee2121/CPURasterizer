@@ -1,7 +1,7 @@
 #pragma once
 
-#include "types.hpp"
-#include "image_view.hpp"
+#include "Types.hpp"
+#include "ImageView.hpp"
 
 namespace Rasterizer
 {
