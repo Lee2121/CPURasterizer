@@ -6,11 +6,39 @@ namespace Rasterizer
 {
 	void Clear(const FImageView& ColorBuffer, const FVector4f& Color)
 	{
-		FColor4UB* Pixels = ColorBuffer.Pixels;
-		uint32_t Size = ColorBuffer.width * ColorBuffer.height;
+		FColor4ub* Pixels = ColorBuffer.Pixels;
+		uint32_t Size = ColorBuffer.Width * ColorBuffer.Height;
 		for (uint32_t i = 0; i < Size; i++)
 		{
-			Pixels[i] = Vector4fToColor4UB(Color);
+			Pixels[i] = FColor4ub::FromVector4F(Color);
+		}
+	}
+
+	void Draw(const FImageView& ColorBuffer, const FDrawCommand& Command)
+	{
+		// Loop through groups of three vertices that make up a triangle without overshooting
+		for (uint32_t VertexIndex = 0; VertexIndex + 2 < Command.Mesh.VertexCount; VertexIndex += 3)
+		{
+			FVector4f v0 = Command.Mesh.Positions[VertexIndex + 0].AsVector4f(1.f);
+			FVector4f v1 = Command.Mesh.Positions[VertexIndex + 1].AsVector4f(1.f);
+			FVector4f v2 = Command.Mesh.Positions[VertexIndex + 2].AsVector4f(1.f);
+
+			for (uint32_t y = 0; y < ColorBuffer.Height; y++)
+			{
+				for (uint32_t x = 0; x < ColorBuffer.Width; x++)
+				{
+					FVector4f Point {x + 0.5f, y + 0.5f, 0.f, 0.f};
+
+					float Determinant01ToPoint = Determinant2D(v1 - v0, Point - v0);
+					float Determinant12ToPoint = Determinant2D(v2 - v1, Point - v1);
+					float Determinant20ToPoint = Determinant2D(v0 - v2, Point - v2);
+
+					if (Determinant01ToPoint >= 0.f && Determinant12ToPoint >= 0.f && Determinant20ToPoint >= 0.f)
+					{
+						ColorBuffer.GetPixelAtPos(x, y) = FColor4ub::FromVector4F(Command.Mesh.Color);
+					}
+				}
+			}
 		}
 	}
 }

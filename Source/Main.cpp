@@ -67,15 +67,32 @@ int main()
 		// If we're still running after handling SDL events, render the frame
 		if (bRunning)
 		{
-			DrawSurface = SDL_CreateSurface(width, height, SDL_PIXELFORMAT_ABGR32);
+			DrawSurface = SDL_CreateSurface(width, height, SDL_PIXELFORMAT_RGBA32);
 			SDL_SetSurfaceBlendMode(DrawSurface, SDL_BLENDMODE_NONE);
 
 			FImageView ColorBuffer;
-			ColorBuffer.height = height;
-			ColorBuffer.width = width;
-			ColorBuffer.Pixels = (FColor4UB*)DrawSurface->pixels;
+			ColorBuffer.Height = height;
+			ColorBuffer.Width = width;
+			ColorBuffer.Pixels = (FColor4ub*)DrawSurface->pixels;
 
-			Rasterizer::Clear(ColorBuffer, { 1.f, 0.f, 0.f, 1.f });
+			Rasterizer::Clear(ColorBuffer, { 0.f, 1.f, 1.f, 1.f });
+
+			FVector3f Vertices[] =
+			{
+				{100.f, 100.f, 0.f},
+				{200.f, 100.f, 0.f},
+				{100.f, 200.f, 0.f},
+			};
+
+			FMesh TriangleMesh;
+			TriangleMesh.Color = {1.f, 0.f, 0.f, 1.f};
+			TriangleMesh.Positions = Vertices;
+			TriangleMesh.VertexCount = 3;
+
+			FDrawCommand DrawTriCommand;
+			DrawTriCommand.Mesh = TriangleMesh;
+
+			Rasterizer::Draw(ColorBuffer, DrawTriCommand);
 
 			SDL_Rect Rect;
 			Rect.x = 0;

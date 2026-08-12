@@ -5,29 +5,51 @@
 
 namespace Rasterizer
 {
-	struct alignas(4) FColor4UB
-	{
-		uint8_t r = 0;
-		uint8_t g = 0;
-		uint8_t b = 0;
-		uint8_t a = 0;
-	};
-
 	struct FVector4f
 	{
-		float x = 0;
-		float y = 0;
-		float z = 0;
-		float w = 0;
+		float X = 0;
+		float Y = 0;
+		float Z = 0;
+		float W = 0;
 	};
 
-	inline FColor4UB Vector4fToColor4UB(const FVector4f& c)
+	inline constexpr FVector4f operator - (const FVector4f& v0, const FVector4f& v1)
 	{
-		FColor4UB Result;
-		Result.r = static_cast<uint8_t>(Math::Max(0.f, Math::Min(255.f, c.x * 255.f)));
-		Result.g = static_cast<uint8_t>(Math::Max(0.f, Math::Min(255.f, c.y * 255.f)));
-		Result.b = static_cast<uint8_t>(Math::Max(0.f, Math::Min(255.f, c.z * 255.f)));
-		Result.a = static_cast<uint8_t>(Math::Max(0.f, Math::Min(255.f, c.w * 255.f)));
-		return Result;
+		return {v0.X - v1.X, v0.Y - v1.Y, v0.Z - v1.Z, v0.W - v1.W};
 	}
+
+	inline constexpr float Determinant2D(const FVector4f& v0, const FVector4f& v1)
+	{
+		return v0.X * v1.Y - v0.Y * v1.X;
+	}
+
+	struct alignas(4) FColor4ub
+	{
+		uint8_t R = 0;
+		uint8_t G = 0;
+		uint8_t B = 0;
+		uint8_t A = 0;
+
+		static inline FColor4ub FromVector4F(const FVector4f& C)
+		{
+			FColor4ub Result;
+			Result.R = static_cast<uint8_t>(Math::Max(0.f, Math::Min(255.f, C.X * 255.f)));
+			Result.G = static_cast<uint8_t>(Math::Max(0.f, Math::Min(255.f, C.Y * 255.f)));
+			Result.B = static_cast<uint8_t>(Math::Max(0.f, Math::Min(255.f, C.Z * 255.f)));
+			Result.A = static_cast<uint8_t>(Math::Max(0.f, Math::Min(255.f, C.W * 255.f)));
+			return Result;
+		}
+	};
+
+	struct FVector3f
+	{
+		float X = 0;
+		float Y = 0;
+		float Z = 0;
+
+		constexpr inline FVector4f AsVector4f(const float w = 0.f) const
+		{
+			return { X, Y, Z, w };
+		}
+	};
 }
