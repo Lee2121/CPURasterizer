@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 4.4.2)
 project(CPURasterizer)
 
-file(GLOB_RECURSE RASTERIZER_HEADERS "include/*.hpp")
+file(GLOB_RECURSE RASTERIZER_HEADERS "source/*.hpp")
 file(GLOB_RECURSE RASTERIZER_SOURCES "source/*.cpp")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
@@ -17,7 +17,7 @@ add_executable(CPURasterizer
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT CPURasterizer)
 
 target_include_directories(CPURasterizer PUBLIC
-	"${CMAKE_CURRENT_SOURCE_DIR}/include"
+	"${CMAKE_CURRENT_SOURCE_DIR}/source"
 )
 
 target_link_libraries(CPURasterizer 

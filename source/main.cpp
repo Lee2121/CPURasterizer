@@ -1,5 +1,9 @@
 #include <SDL3/SDL.h>
 
+#include "rasterizer/renderer.hpp"
+
+using namespace Rasterizer;
+
 int main()
 {
 	SDL_Init(SDL_INIT_VIDEO);
@@ -53,17 +57,18 @@ int main()
 			DrawSurface = SDL_CreateSurface(width, height, SDL_PIXELFORMAT_ABGR32);
 			SDL_SetSurfaceBlendMode(DrawSurface, SDL_BLENDMODE_NONE);
 
+			FImageView ColorBuffer;
+			ColorBuffer.height = height;
+			ColorBuffer.width = width;
+			ColorBuffer.Pixels = (FColor4UB*)DrawSurface->pixels;
+
+			Rasterizer::Clear(ColorBuffer, { 1.f, 0.f, 0.f, 1.f });
+
 			SDL_Rect Rect;
 			Rect.x = 0;
 			Rect.y = 0;
 			Rect.w = width;
 			Rect.h = height;
-
-			uint32_t* Pixels = (uint32_t*)DrawSurface->pixels;
-			for (int i = 0; i < width * height; i++)
-			{
-				Pixels[i] = 0xffffdfdf;
-			}
 
 			SDL_BlitSurface(DrawSurface, &Rect, SDL_GetWindowSurface(Window), &Rect);
 			SDL_UpdateWindowSurface(Window);

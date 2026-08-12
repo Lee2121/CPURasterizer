@@ -14,16 +14,8 @@ if exist build\ (
 	)
 )
 
-echo:
-echo Configuring...
-echo:
-cmake -S . -B build
-
-:: check for errors with configuration
+call ReconfigureProject.bat
 if %errorlevel% neq 0 (
-	echo:
-	echo Configuration failed!
-	echo:
 	pause
 	exit /b %errorlevel%
 )
