@@ -74,14 +74,14 @@ int main()
 			ColorBuffer.Height = height;
 			ColorBuffer.Width = width;
 			ColorBuffer.Pixels = (FColor4ub*)DrawSurface->pixels;
-
+			
 			Rasterizer::Clear(ColorBuffer, { 0.f, 1.f, 1.f, 1.f });
 
 			FVector3f Vertices[] =
 			{
-				{100.f, 100.f, 0.f},
-				{200.f, 100.f, 0.f},
-				{100.f, 200.f, 0.f},
+				{-1000.f, -1000.f, 0.f},
+				{400, 1000.f, 0.f},
+				{250.f, -500.f, 0.f},
 			};
 
 			FMesh TriangleMesh;

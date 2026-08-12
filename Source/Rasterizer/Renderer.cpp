@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Renderer.hpp"
+#include "Util/Memory.hpp"
 
 namespace Rasterizer
 {
@@ -15,7 +16,7 @@ namespace Rasterizer
 	}
 
 	void Draw(const FImageView& ColorBuffer, const FDrawCommand& Command)
-	{
+	{  	
 		// Loop through groups of three vertices that make up a triangle without overshooting
 		for (uint32_t VertexIndex = 0; VertexIndex + 2 < Command.Mesh.VertexCount; VertexIndex += 3)
 		{
@@ -23,9 +24,29 @@ namespace Rasterizer
 			FVector4f v1 = Command.Mesh.Positions[VertexIndex + 1].AsVector4f(1.f);
 			FVector4f v2 = Command.Mesh.Positions[VertexIndex + 2].AsVector4f(1.f);
 
-			for (uint32_t y = 0; y < ColorBuffer.Height; y++)
+			float Determinant012 = Determinant2D(v1 - v0, v2 - v0);
+			const bool bIsCounterClockwise = Determinant012 < 0.f;
+			if (bIsCounterClockwise)
 			{
-				for (uint32_t x = 0; x < ColorBuffer.Width; x++)
+				Memory::Swap(v1, v2);
+				Determinant012 = -Determinant012;
+			}
+
+			// Calc AABB of the mesh
+			int32_t xMin = Math::Min({ Math::Floor(v0.X),	Math::Floor(v1.X),	Math::Floor(v2.X)	});
+			int32_t yMin = Math::Min({ Math::Floor(v0.Y),	Math::Floor(v1.Y),	Math::Floor(v2.Y)	});
+			int32_t xMax = Math::Max({ Math::Ceil(v0.X),	Math::Ceil(v1.X),	Math::Ceil(v2.X)	});
+			int32_t yMax = Math::Max({ Math::Ceil(v0.Y),	Math::Ceil(v1.Y),	Math::Ceil(v2.Y)	});
+
+			// Clamp to color buffer bounds
+			xMin = Math::Max<int32_t>(xMin, 0);
+			yMin = Math::Max<int32_t>(yMin, 0);
+			xMax = Math::Min<int32_t>(xMax, ColorBuffer.Width);
+			yMax = Math::Min<int32_t>(yMax, ColorBuffer.Height);
+
+			for (uint32_t y = yMin; y < yMax; y++)
+			{
+				for (uint32_t x = xMin; x < xMax; x++)
 				{
 					FVector4f Point {x + 0.5f, y + 0.5f, 0.f, 0.f};
 
