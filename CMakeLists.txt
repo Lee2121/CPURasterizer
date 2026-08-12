@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.5)
 project(CPURasterizer)
 
-file(GLOB_RECURSE RASTERIZER_HEADERS "source/*.hpp")
-file(GLOB_RECURSE RASTERIZER_SOURCES "source/*.cpp")
+file(GLOB_RECURSE RASTERIZER_HEADERS "Source/*.hpp")
+file(GLOB_RECURSE RASTERIZER_SOURCES "Source/*.cpp")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 
-add_subdirectory(vendored/SDL EXCLUDE_FROM_ALL)
+add_subdirectory(Vendored/SDL EXCLUDE_FROM_ALL)
 
 add_executable(CPURasterizer
 	${RASTERIZER_HEADERS}
@@ -17,7 +17,7 @@ add_executable(CPURasterizer
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT CPURasterizer)
 
 target_include_directories(CPURasterizer PUBLIC
-	"${CMAKE_CURRENT_SOURCE_DIR}/source"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Source"
 )
 
 target_link_libraries(CPURasterizer 
