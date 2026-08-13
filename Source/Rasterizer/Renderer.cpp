@@ -43,9 +43,9 @@ namespace Rasterizer
 		// Loop through groups of three vertices that make up a triangle without overshooting
 		for (uint32_t VertexIndex = 0; VertexIndex + 2 < Command.Mesh.VertexCount; VertexIndex += 3)
 		{
-			FVector4f v0 = Command.Mesh.Positions[VertexIndex + 0].AsVector4f(1.f);
-			FVector4f v1 = Command.Mesh.Positions[VertexIndex + 1].AsVector4f(1.f);
-			FVector4f v2 = Command.Mesh.Positions[VertexIndex + 2].AsVector4f(1.f);
+			FVector4f v0 = Command.Transform * Command.Mesh.Positions[VertexIndex + 0].AsVector4f(1.f);
+			FVector4f v1 = Command.Transform * Command.Mesh.Positions[VertexIndex + 1].AsVector4f(1.f);
+			FVector4f v2 = Command.Transform * Command.Mesh.Positions[VertexIndex + 2].AsVector4f(1.f);
 
 			float Determinant012 = Determinant2D(v1 - v0, v2 - v0);
 			const bool bIsCounterClockwise = Determinant012 < 0.f;

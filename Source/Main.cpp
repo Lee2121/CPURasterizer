@@ -80,42 +80,36 @@ int main()
 			
 			Rasterizer::Clear(ColorBuffer, { 0.f, 1.f, 1.f, 1.f });
 
-			FVector3f Tri1Vertices[] =
+			FMesh TriangleMesh;
+			FVector3f Vertices[] =
 			{
-				{700, 300.f, 0.f},
-				{140.f, 40.f, 0.f},
-				{80.f, 40.f, 0.f},
+				{0.f, 0.f, 0.f},
+				{100.f, 0.f, 0.f},
+				{0.f, 100.f, 0.f},
 			};
+			TriangleMesh.Positions = Vertices;
+			TriangleMesh.VertexCount = 3;
 
-			FMesh Triangle1Mesh;
-			Triangle1Mesh.Color = {1.f, 0.f, 0.f, 1.f};
-			Triangle1Mesh.Positions = Tri1Vertices;
-			Triangle1Mesh.VertexCount = 3;
+			FDrawCommand DrawCommand;
+			DrawCommand.CullMode = ECullMode::None;
 
-			FDrawCommand DrawTri1Command;
-			DrawTri1Command.Mesh = Triangle1Mesh;
-			DrawTri1Command.CullMode = ECullMode::CounterClockWise;
-
-			FVector3f Tri2Vertices[] =
+			for (int TriIndex = 0; TriIndex < 100; ++TriIndex)
 			{
-				{700, 300.f, 0.f},
-				{80.f, 40.f, 0.f},
-				{50.f, 90.f, 0.f},
-			};
+				TriangleMesh.Color = FVector4f({(float)(TriIndex % 3 == 0), (float)(TriIndex % 3 == 1), (float)(TriIndex % 3 == 2), 1.f});
 
-			FMesh Triangle2Mesh;
-			Triangle2Mesh.Color = { 0.f, 0.f, 1.f, 1.f };
-			Triangle2Mesh.Positions = Tri2Vertices;
-			Triangle2Mesh.VertexCount = 3;
+				FMatrix4x4f TransformMatrix =
+				{
+					1.f, 0.f, 0.f, MouseX + 100.f * (TriIndex % 10),
+					0.f, 1.f, 0.f, MouseY + 100.f * (TriIndex/ 10),
+					0.f, 0.f, 1.f, 0.f,
+					0.f, 0.f, 0.f, 1.f,
+				};
 
-			FDrawCommand DrawTri2Command;
-			DrawTri2Command.Mesh = Triangle2Mesh;
-			DrawTri2Command.CullMode = ECullMode::CounterClockWise;
+				DrawCommand.Mesh = TriangleMesh;
+				DrawCommand.Transform = TransformMatrix;
 
-			bool bUseFillRule = (Math::Floor(TotalTime) % 2 == 0);
-
-			Rasterizer::Draw(ColorBuffer, DrawTri1Command);
-			Rasterizer::Draw(ColorBuffer, DrawTri2Command);
+				Rasterizer::Draw(ColorBuffer, DrawCommand);
+			}
 
 			SDL_Rect Rect;
 			Rect.x = 0;

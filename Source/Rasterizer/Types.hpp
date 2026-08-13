@@ -7,18 +7,48 @@ namespace Rasterizer
 {
 	struct FVector4f
 	{
+		FVector4f() {};
+		FVector4f(float InX, float InY, float InZ, float InW) 
+			: X(InX), Y(InY), Z(InZ), W(InW)
+		{
+		}
+
 		float X = 0;
 		float Y = 0;
 		float Z = 0;
 		float W = 0;
+
+		inline float& operator[](size_t Index)
+		{
+			switch (Index)
+			{
+			case 0:	return X;
+			case 1:	return Y;
+			case 2:	return Z;
+			case 3:	return W;
+			default: throw;
+			}
+		}
+
+		inline const float& operator[](size_t Index) const
+		{
+			switch (Index)
+			{
+			case 0:	return X;
+			case 1:	return Y;
+			case 2:	return Z;
+			case 3:	return W;
+			default: throw;
+			}
+		}
 	};
 
-	inline constexpr FVector4f operator- (const FVector4f& v0, const FVector4f& v1)
+	inline FVector4f operator- (const FVector4f& v0, const FVector4f& v1)
 	{
 		return {v0.X - v1.X, v0.Y - v1.Y, v0.Z - v1.Z, v0.W - v1.W};
 	}
 
-	inline constexpr float Determinant2D(const FVector4f& v0, const FVector4f& v1)
+	inline float Determinant2D(const FVector4f& v0, const FVector4f& v1)
 	{
 		return v0.X * v1.Y - v0.Y * v1.X;
 	}
@@ -47,14 +77,57 @@ namespace Rasterizer
 		float Y = 0;
 		float Z = 0;
 
-		constexpr inline FVector4f AsVector4f(const float w = 0.f) const
+		inline FVector4f AsVector4f(const float w = 0.f) const
 		{
 			return { X, Y, Z, w };
 		}
 	};
 
-	inline constexpr FVector3f operator- (const FVector3f& v0, const FVector3f& v1)
+	inline FVector3f operator- (const FVector3f& v0, const FVector3f& v1)
 	{
 		return { v0.X - v1.X, v0.Y - v1.Y, v0.Z - v1.Z };
+	}
+
+	struct FMatrix4x4f
+	{
+		float Values[16];
+
+		static FMatrix4x4f Identity()
+		{
+			return FMatrix4x4f{
+				1.f, 0.f, 0.f, 0.f,
+				0.f, 1.f, 0.f, 0.f,
+				0.f, 0.f, 1.f, 0.f,
+				0.f, 0.f, 0.f, 1.f
+			};
+		}
+
+		inline float& operator[](size_t Index)
+		{
+			return Values[Index];
+		}
+
+		inline const float& operator[](size_t Index) const
+		{
+			return Values[Index];
+		}
+	};
+
+	inline FVector4f operator* (const FMatrix4x4f& M, const FVector4f& V)
+	{
+		FVector4f Result{0.f, 0.f, 0.f, 0.f};
+
+		for (size_t i = 0; i < 4; ++i)
+		{
+			float Sum = 0.f;
+			size_t RowOffset = i * 4;
+			for (size_t j = 0; j < 4; ++j)
+			{
+				Sum += M[RowOffset + j] * V[j];
+			}
+			Result[i] = Sum;
+		}
+
+		return Result;
 	}
 }

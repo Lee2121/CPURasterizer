@@ -9,5 +9,6 @@ namespace Rasterizer
 	{
 		FMesh Mesh;
 		ECullMode CullMode = ECullMode::None;
+		FMatrix4x4f Transform = FMatrix4x4f::Identity();
 	};
 }
