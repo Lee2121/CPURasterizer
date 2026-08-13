@@ -91,6 +91,7 @@ int main()
 
 			FDrawCommand DrawTriCommand;
 			DrawTriCommand.Mesh = TriangleMesh;
+			DrawTriCommand.CullMode = ECullMode::CounterClockWise;
 
 			Rasterizer::Draw(ColorBuffer, DrawTriCommand);
 

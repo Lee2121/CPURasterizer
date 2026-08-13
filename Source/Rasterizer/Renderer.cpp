@@ -18,8 +18,18 @@ namespace Rasterizer
 
 	void Draw(const FImageView& ColorBuffer, const FDrawCommand& Command)
 	{
-		bool Test = false;
-		ENSURE(Test == true, "Test must be true");
+		auto ShouldTriDraw = [](bool bTriIsClockwise, const FDrawCommand& Command) -> bool
+			{
+				switch (Command.CullMode)
+				{
+				case ECullMode::None:				return true;
+				case ECullMode::Clockwise:			return !bTriIsClockwise;
+				case ECullMode::CounterClockWise:	return bTriIsClockwise;
+				default:
+					ENSURE(false, "Missing logic for cullmode");
+					return true;
+				}
+			};
 
 		// Loop through groups of three vertices that make up a triangle without overshooting
 		for (uint32_t VertexIndex = 0; VertexIndex + 2 < Command.Mesh.VertexCount; VertexIndex += 3)
@@ -30,6 +40,11 @@ namespace Rasterizer
 
 			float Determinant012 = Determinant2D(v1 - v0, v2 - v0);
 			const bool bIsCounterClockwise = Determinant012 < 0.f;
+
+			if (!ShouldTriDraw(bIsCounterClockwise, Command))
+			{
+				continue;
+			}
 
 			if (bIsCounterClockwise)
 			{

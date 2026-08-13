@@ -34,7 +34,8 @@ if %errorlevel% neq 0 (
 	exit /b %errorlevel%
 )
 
-start "" CPURasterizer.sln
+# disabled for now since I just open the cmake folder directly in visual studio, rather than the sln
+#start "" CPURasterizer.sln
 
 echo:
 echo Success!
