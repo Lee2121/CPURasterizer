@@ -13,7 +13,7 @@ namespace Rasterizer
 		float W = 0;
 	};
 
-	inline constexpr FVector4f operator - (const FVector4f& v0, const FVector4f& v1)
+	inline constexpr FVector4f operator- (const FVector4f& v0, const FVector4f& v1)
 	{
 		return {v0.X - v1.X, v0.Y - v1.Y, v0.Z - v1.Z, v0.W - v1.W};
 	}
@@ -52,4 +52,9 @@ namespace Rasterizer
 			return { X, Y, Z, w };
 		}
 	};
+
+	inline constexpr FVector3f operator- (const FVector3f& v0, const FVector3f& v1)
+	{
+		return { v0.X - v1.X, v0.Y - v1.Y, v0.Z - v1.Z };
+	}
 }

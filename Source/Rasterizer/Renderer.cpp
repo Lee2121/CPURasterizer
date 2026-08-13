@@ -4,6 +4,8 @@
 #include "Util/Memory.hpp"
 #include "Util/Validation.hpp"
 
+
+
 namespace Rasterizer
 {
 	void Clear(const FImageView& ColorBuffer, const FVector4f& Color)
@@ -29,6 +31,13 @@ namespace Rasterizer
 					ENSURE(false, "Missing logic for cullmode");
 					return true;
 				}
+			};
+
+		auto IsLeftOrTopEdge = [](const FVector4f& Start, const FVector4f& End) -> bool
+			{
+				bool bIsLeft = End.Y - Start.Y > 0;
+				bool bIsTop = End.Y - Start.Y == 0 && End.X - Start.X <= 0;
+				return bIsLeft || bIsTop;
 			};
 
 		// Loop through groups of three vertices that make up a triangle without overshooting
@@ -64,6 +73,11 @@ namespace Rasterizer
 			xMax = Math::Min<int32_t>(xMax, ColorBuffer.Width);
 			yMax = Math::Min<int32_t>(yMax, ColorBuffer.Height);
 
+			// Pre-calc if any edges are top or left
+			const bool b01IsTopOrLeftEdge = IsLeftOrTopEdge(v0, v1);
+			const bool b12IsTopOrLeftEdge = IsLeftOrTopEdge(v1, v2);
+			const bool b20IsTopOrLeftEdge = IsLeftOrTopEdge(v2, v0);
+
 			for (int32_t y = yMin; y < yMax; y++)
 			{
 				for (int32_t x = xMin; x < xMax; x++)
@@ -73,6 +87,11 @@ namespace Rasterizer
 					float Determinant01ToPoint = Determinant2D(v1 - v0, Point - v0);
 					float Determinant12ToPoint = Determinant2D(v2 - v1, Point - v1);
 					float Determinant20ToPoint = Determinant2D(v0 - v2, Point - v2);
+
+					// Fill rule to fix multiple tris with overlapping edges. Uses the "top left" fill rule - https://kristoffer-dyrkorn.github.io/triangle-rasterizer/4
+					Determinant01ToPoint = b01IsTopOrLeftEdge ? Determinant01ToPoint - 1.f : Determinant01ToPoint;
+					Determinant12ToPoint = b12IsTopOrLeftEdge ? Determinant12ToPoint - 1.f : Determinant12ToPoint;
+					Determinant20ToPoint = b20IsTopOrLeftEdge ? Determinant20ToPoint - 1.f : Determinant20ToPoint;
 
 					if (Determinant01ToPoint >= 0.f && Determinant12ToPoint >= 0.f && Determinant20ToPoint >= 0.f)
 					{

@@ -23,6 +23,8 @@ int main()
 	using Clock = std::chrono::high_resolution_clock;
 	auto LastFrameStart = Clock::now();
 
+	float TotalTime = 0;
+
 	bool bRunning = true;
 	while (bRunning)
 	{
@@ -60,9 +62,10 @@ int main()
 		}
 
 		auto Now = Clock::now();
-		float dt = std::chrono::duration_cast<std::chrono::duration<float>>(Now - LastFrameStart).count();
+		float DeltaTime = std::chrono::duration_cast<std::chrono::duration<float>>(Now - LastFrameStart).count();
 		LastFrameStart = Now;
-		std::cout << dt << std::endl;
+		TotalTime += DeltaTime;
+		std::cout << DeltaTime << " -- " << TotalTime << std::endl;
 
 		// If we're still running after handling SDL events, render the frame
 		if (bRunning)
@@ -77,23 +80,42 @@ int main()
 			
 			Rasterizer::Clear(ColorBuffer, { 0.f, 1.f, 1.f, 1.f });
 
-			FVector3f Vertices[] =
+			FVector3f Tri1Vertices[] =
 			{
-				{-1000.f, -1000.f, 0.f},
-				{400, 1000.f, 0.f},
-				{250.f, -500.f, 0.f},
+				{700, 300.f, 0.f},
+				{140.f, 40.f, 0.f},
+				{80.f, 40.f, 0.f},
 			};
 
-			FMesh TriangleMesh;
-			TriangleMesh.Color = {1.f, 0.f, 0.f, 1.f};
-			TriangleMesh.Positions = Vertices;
-			TriangleMesh.VertexCount = 3;
+			FMesh Triangle1Mesh;
+			Triangle1Mesh.Color = {1.f, 0.f, 0.f, 1.f};
+			Triangle1Mesh.Positions = Tri1Vertices;
+			Triangle1Mesh.VertexCount = 3;
 
-			FDrawCommand DrawTriCommand;
-			DrawTriCommand.Mesh = TriangleMesh;
-			DrawTriCommand.CullMode = ECullMode::CounterClockWise;
+			FDrawCommand DrawTri1Command;
+			DrawTri1Command.Mesh = Triangle1Mesh;
+			DrawTri1Command.CullMode = ECullMode::CounterClockWise;
 
-			Rasterizer::Draw(ColorBuffer, DrawTriCommand);
+			FVector3f Tri2Vertices[] =
+			{
+				{700, 300.f, 0.f},
+				{80.f, 40.f, 0.f},
+				{50.f, 90.f, 0.f},
+			};
+
+			FMesh Triangle2Mesh;
+			Triangle2Mesh.Color = { 0.f, 0.f, 1.f, 1.f };
+			Triangle2Mesh.Positions = Tri2Vertices;
+			Triangle2Mesh.VertexCount = 3;
+
+			FDrawCommand DrawTri2Command;
+			DrawTri2Command.Mesh = Triangle2Mesh;
+			DrawTri2Command.CullMode = ECullMode::CounterClockWise;
+
+			bool bUseFillRule = (Math::Floor(TotalTime) % 2 == 0);
+
+			Rasterizer::Draw(ColorBuffer, DrawTri1Command);
+			Rasterizer::Draw(ColorBuffer, DrawTri2Command);
 
 			SDL_Rect Rect;
 			Rect.x = 0;
