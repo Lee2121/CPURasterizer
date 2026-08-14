@@ -48,6 +48,16 @@ namespace Rasterizer
 		return {v0.X - v1.X, v0.Y - v1.Y, v0.Z - v1.Z, v0.W - v1.W};
 	}
 
+	inline FVector4f operator+ (const FVector4f& v0, const FVector4f& v1)
+	{
+		return { v0.X + v1.X, v0.Y + v1.Y, v0.Z + v1.Z, v0.W + v1.W };
+	}
+
+	inline FVector4f operator* (const FVector4f& v0, const float& f)
+	{
+		return { v0.X * f, v0.Y * f, v0.Z * f, v0.W * f };
+	}
+
 	inline float Determinant2D(const FVector4f& v0, const FVector4f& v1)
 	{
 		return v0.X * v1.Y - v0.Y * v1.X;

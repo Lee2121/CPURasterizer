@@ -87,7 +87,16 @@ int main()
 				{100.f, 0.f, 0.f},
 				{0.f, 100.f, 0.f},
 			};
-			TriangleMesh.Positions = Vertices;
+
+			FVector4f Colors[] =
+			{
+				{1.f, 0.f, 0.f, 1.f},
+				{0.f, 1.f, 0.f, 1.f},
+				{0.f, 0.f, 1.f, 1.f},
+			};
+
+			TriangleMesh.Positions = {Vertices};
+			TriangleMesh.Colors = {Colors};
 			TriangleMesh.VertexCount = 3;
 
 			FDrawCommand DrawCommand;
@@ -95,8 +104,6 @@ int main()
 
 			for (int TriIndex = 0; TriIndex < 100; ++TriIndex)
 			{
-				TriangleMesh.Color = FVector4f({(float)(TriIndex % 3 == 0), (float)(TriIndex % 3 == 1), (float)(TriIndex % 3 == 2), 1.f});
-
 				FMatrix4x4f TransformMatrix =
 				{
 					1.f, 0.f, 0.f, MouseX + 100.f * (TriIndex % 10),

@@ -45,7 +45,11 @@ namespace Rasterizer
 		{
 			FVector4f v0 = Command.Transform * Command.Mesh.Positions[VertexIndex + 0].AsVector4f(1.f);
 			FVector4f v1 = Command.Transform * Command.Mesh.Positions[VertexIndex + 1].AsVector4f(1.f);
-			FVector4f v2 = Command.Transform * Command.Mesh.Positions[VertexIndex + 2].AsVector4f(1.f);
+			FVector4f v2 = Command.Transform * Command.Mesh.Positions[VertexIndex + 2].AsVector4f(1.f); 
+
+			FVector4f c0 = Command.Mesh.Colors[VertexIndex + 0];
+			FVector4f c1 = Command.Mesh.Colors[VertexIndex + 1];
+			FVector4f c2 = Command.Mesh.Colors[VertexIndex + 2];
 
 			float Determinant012 = Determinant2D(v1 - v0, v2 - v0);
 			const bool bIsCounterClockwise = Determinant012 < 0.f;
@@ -95,7 +99,11 @@ namespace Rasterizer
 
 					if (Determinant01ToPoint >= 0.f && Determinant12ToPoint >= 0.f && Determinant20ToPoint >= 0.f)
 					{
-						ColorBuffer.GetPixelAtPos(x, y) = FColor4ub::FromVector4F(Command.Mesh.Color);
+						float Color0Alpha = Determinant12ToPoint / Determinant012;
+						float Color1Alpha = Determinant20ToPoint / Determinant012;
+						float Color2Alpha = Determinant01ToPoint / Determinant012;
+
+						ColorBuffer.GetPixelAtPos(x, y) = FColor4ub::FromVector4F(c0 * Color0Alpha + c1 * Color1Alpha + c2 * Color2Alpha);
 					}
 				}
 			}
