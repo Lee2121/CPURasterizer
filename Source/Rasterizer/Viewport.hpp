@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Types.hpp"
+#include "Util/Vector.hpp"
 
 namespace Rasterizer
 {

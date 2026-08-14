@@ -1,10 +1,9 @@
 #pragma once
 
 #include "Renderer.hpp"
+#include "Color.hpp"
 #include "Util/Memory.hpp"
 #include "Util/Validation.hpp"
-
-
 
 namespace Rasterizer
 {

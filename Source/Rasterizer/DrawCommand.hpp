@@ -2,6 +2,7 @@
 
 #include "Mesh.hpp"
 #include "Settings.hpp"
+#include "Util/Matrix.hpp"
 
 namespace Rasterizer
 {

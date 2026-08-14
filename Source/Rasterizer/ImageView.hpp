@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Types.hpp"
-
-#include <cstdint>
+#include "Color.hpp"
 
 namespace Rasterizer
 {
