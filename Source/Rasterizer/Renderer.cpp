@@ -66,6 +66,7 @@ namespace Rasterizer
 			if (bIsCounterClockwise)
 			{
 				Memory::Swap(v1, v2);
+				Memory::Swap(c1, c2);
 				Determinant012 = -Determinant012;
 			}
 
