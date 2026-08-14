@@ -75,17 +75,17 @@ namespace Rasterizer
 			int32_t xMax = Math::Min<int32_t>(RenderTarget.ColorBuffer.Width, RenderTarget.Viewport.xMax) - 1;
 			int32_t yMax = Math::Min<int32_t>(RenderTarget.ColorBuffer.Height, RenderTarget.Viewport.yMax) - 1;
 
-			// Calc AABB of the mesh
-			int32_t xMin = Math::Min({ Math::Floor(v0.X),	Math::Floor(v1.X),	Math::Floor(v2.X)	});
-			int32_t yMin = Math::Min({ Math::Floor(v0.Y),	Math::Floor(v1.Y),	Math::Floor(v2.Y)	});
-			int32_t xMax = Math::Max({ Math::Ceil(v0.X),	Math::Ceil(v1.X),	Math::Ceil(v2.X)	});
-			int32_t yMax = Math::Max({ Math::Ceil(v0.Y),	Math::Ceil(v1.Y),	Math::Ceil(v2.Y)	});
+			// Clamp to within AABB of the mesh
+			xMin = Math::Min({ Math::Floor(v0.X),	Math::Floor(v1.X),	Math::Floor(v2.X)	});
+			yMin = Math::Min({ Math::Floor(v0.Y),	Math::Floor(v1.Y),	Math::Floor(v2.Y)	});
+			xMax = Math::Max({ Math::Ceil(v0.X),	Math::Ceil(v1.X),	Math::Ceil(v2.X)	});
+			yMax = Math::Max({ Math::Ceil(v0.Y),	Math::Ceil(v1.Y),	Math::Ceil(v2.Y)	});
 
 			// Clamp to color buffer bounds
 			xMin = Math::Max<int32_t>(xMin, 0);
 			yMin = Math::Max<int32_t>(yMin, 0);
-			xMax = Math::Min<int32_t>(xMax, ColorBuffer.Width);
-			yMax = Math::Min<int32_t>(yMax, ColorBuffer.Height);
+			xMax = Math::Min<int32_t>(xMax, RenderTarget.ColorBuffer.Width);
+			yMax = Math::Min<int32_t>(yMax, RenderTarget.ColorBuffer.Height);
 
 			// Pre-calc if any edges are top or left
 			const bool b01IsTopOrLeftEdge = IsLeftOrTopEdge(v0, v1);
@@ -113,7 +113,7 @@ namespace Rasterizer
 						float Color1Alpha = Determinant20ToPoint / Determinant012;
 						float Color2Alpha = Determinant01ToPoint / Determinant012;
 
-						ColorBuffer.GetPixelAtPos(x, y) = FColor4ub::FromVector4F(c0 * Color0Alpha + c1 * Color1Alpha + c2 * Color2Alpha);
+						RenderTarget.ColorBuffer.GetPixelAtPos(x, y) = FColor4ub::FromVector4F(c0 * Color0Alpha + c1 * Color1Alpha + c2 * Color2Alpha);
 					}
 				}
 			}
