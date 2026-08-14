@@ -15,7 +15,8 @@ int main()
 	int Height = 600;
 
 	SDL_Window* Window = SDL_CreateWindow("CPU Rasterizer", Width, Height, SDL_WINDOW_RESIZABLE);
-	SDL_Surface* DrawSurface = nullptr;
+	SDL_Surface* DrawSurface = SDL_CreateSurface(Width, Height, SDL_PIXELFORMAT_RGBA32);
+	SDL_SetSurfaceBlendMode(DrawSurface, SDL_BLENDMODE_NONE);
 
 	float MouseX = 0;
 	float MouseY = 0;
@@ -70,9 +71,6 @@ int main()
 		// If we're still running after handling SDL events, render the frame
 		if (bRunning)
 		{
-			DrawSurface = SDL_CreateSurface(Width, Height, SDL_PIXELFORMAT_RGBA32);
-			SDL_SetSurfaceBlendMode(DrawSurface, SDL_BLENDMODE_NONE);
-
 			FRenderTarget RenderTarget
 			{
 				// FImageView
