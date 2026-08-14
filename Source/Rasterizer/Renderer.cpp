@@ -41,19 +41,30 @@ namespace Rasterizer
 			};
 
 		// Loop through groups of three vertices that make up a triangle without overshooting
-		for (uint32_t VertexIndex = 0; VertexIndex + 2 < Command.Mesh.VertexCount; VertexIndex += 3)
+		for (uint32_t VertexIndex = 0; VertexIndex + 2 < Command.Mesh.Count; VertexIndex += 3)
 		{
-			FVector4f v0 = Command.Transform * Command.Mesh.Positions[VertexIndex + 0].AsVector4f(1.f);
-			FVector4f v1 = Command.Transform * Command.Mesh.Positions[VertexIndex + 1].AsVector4f(1.f);
-			FVector4f v2 = Command.Transform * Command.Mesh.Positions[VertexIndex + 2].AsVector4f(1.f); 
+			uint32_t VertexIndex0 = VertexIndex + 0;
+			uint32_t VertexIndex1 = VertexIndex + 1;
+			uint32_t VertexIndex2 = VertexIndex + 2;
+
+			if (nullptr != Command.Mesh.Indices)
+			{
+				VertexIndex0 = Command.Mesh.Indices[VertexIndex0];
+				VertexIndex1 = Command.Mesh.Indices[VertexIndex1];
+				VertexIndex2 = Command.Mesh.Indices[VertexIndex2];
+			}
+
+			FVector4f v0 = Command.Transform * Command.Mesh.Positions[VertexIndex0].AsVector4f(1.f);
+			FVector4f v1 = Command.Transform * Command.Mesh.Positions[VertexIndex1].AsVector4f(1.f);
+			FVector4f v2 = Command.Transform * Command.Mesh.Positions[VertexIndex2].AsVector4f(1.f);
 
 			v0 = RenderTarget.Viewport.ViewportToScreenCoords(v0);
 			v1 = RenderTarget.Viewport.ViewportToScreenCoords(v1);
 			v2 = RenderTarget.Viewport.ViewportToScreenCoords(v2);
 
-			FVector4f c0 = Command.Mesh.Colors[VertexIndex + 0];
-			FVector4f c1 = Command.Mesh.Colors[VertexIndex + 1];
-			FVector4f c2 = Command.Mesh.Colors[VertexIndex + 2];
+			FVector4f c0 = Command.Mesh.Colors[VertexIndex0];
+			FVector4f c1 = Command.Mesh.Colors[VertexIndex1];
+			FVector4f c2 = Command.Mesh.Colors[VertexIndex2];
 
 			float Determinant012 = Determinant2D(v1 - v0, v2 - v0);
 			const bool bIsCounterClockwise = Determinant012 < 0.f;

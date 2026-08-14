@@ -11,8 +11,8 @@ int main()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 
-	int Width = 800;
-	int Height = 600;
+	uint32_t Width = 800;
+	uint32_t Height = 600;
 
 	SDL_Window* Window = SDL_CreateWindow("CPU Rasterizer", Width, Height, SDL_WINDOW_RESIZABLE);
 	SDL_Surface* DrawSurface = nullptr;
@@ -97,9 +97,10 @@ int main()
 
 			FVector3f Vertices[] =
 			{
-				{ 0.f,   0.5f, 0.f},
 				{-0.5f, -0.5f, 0.f},
+				{-0.5f,  0.5f, 0.f},
 				{ 0.5f, -0.5f, 0.f},
+				{ 0.5f,	 0.5f, 0.f},
 			};
 
 			FVector4f Colors[] =
@@ -107,7 +108,15 @@ int main()
 				{1.f, 0.f, 0.f, 1.f},
 				{0.f, 1.f, 0.f, 1.f},
 				{0.f, 0.f, 1.f, 1.f},
+				{1.f, 1.f, 1.f, 1.f},
 			};
+
+			uint32_t Indices[]
+			{
+				0, 1, 2,
+				2, 1, 3,
+			};
+
 			FMesh TriangleMesh
 			{
 				// Positions
@@ -118,8 +127,12 @@ int main()
 				{ 
 					Colors 
 				},
-				// VertexCount
-				3
+				// Indices
+				{
+					Indices
+				},
+				// Count
+				6
 			};
 
 			FDrawCommand DrawCommand
