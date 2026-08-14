@@ -115,9 +115,9 @@ namespace Rasterizer
 					float Determinant20ToPoint = Determinant2D(v0 - v2, Point - v2);
 
 					// Fill rule to fix multiple tris with overlapping edges. Uses the "top left" fill rule - https://kristoffer-dyrkorn.github.io/triangle-rasterizer/4
-					Determinant01ToPoint = b01IsTopOrLeftEdge ? Determinant01ToPoint - 1.f : Determinant01ToPoint;
-					Determinant12ToPoint = b12IsTopOrLeftEdge ? Determinant12ToPoint - 1.f : Determinant12ToPoint;
-					Determinant20ToPoint = b20IsTopOrLeftEdge ? Determinant20ToPoint - 1.f : Determinant20ToPoint;
+					Determinant01ToPoint = b01IsTopOrLeftEdge ? Determinant01ToPoint - .5f : Determinant01ToPoint;
+					Determinant12ToPoint = b12IsTopOrLeftEdge ? Determinant12ToPoint - .5f : Determinant12ToPoint;
+					Determinant20ToPoint = b20IsTopOrLeftEdge ? Determinant20ToPoint - .5f : Determinant20ToPoint;
 
 					if (Determinant01ToPoint >= 0.f && Determinant12ToPoint >= 0.f && Determinant20ToPoint >= 0.f)
 					{
