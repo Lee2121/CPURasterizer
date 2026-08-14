@@ -8,17 +8,17 @@
 
 namespace Rasterizer
 {
-	void Clear(const FImageView& ColorBuffer, const FVector4f& Color)
+	void Clear(const FRenderTarget& RenderTarget, const FVector4f& Color)
 	{
-		FColor4ub* Pixels = ColorBuffer.Pixels;
-		uint32_t Size = ColorBuffer.Width * ColorBuffer.Height;
+		FColor4ub* Pixels = RenderTarget.ColorBuffer.Pixels;
+		uint32_t Size = RenderTarget.ColorBuffer.Width * RenderTarget.ColorBuffer.Height;
 		for (uint32_t i = 0; i < Size; i++)
 		{
 			Pixels[i] = FColor4ub::FromVector4F(Color);
 		}
 	}
 
-	void Draw(const FImageView& ColorBuffer, const FDrawCommand& Command)
+	void Draw(const FRenderTarget& RenderTarget, const FDrawCommand& Command)
 	{
 		auto ShouldTriDraw = [](bool bTriIsClockwise, const FDrawCommand& Command) -> bool
 			{
@@ -47,6 +47,10 @@ namespace Rasterizer
 			FVector4f v1 = Command.Transform * Command.Mesh.Positions[VertexIndex + 1].AsVector4f(1.f);
 			FVector4f v2 = Command.Transform * Command.Mesh.Positions[VertexIndex + 2].AsVector4f(1.f); 
 
+			v0 = RenderTarget.Viewport.ViewportToScreenCoords(v0);
+			v1 = RenderTarget.Viewport.ViewportToScreenCoords(v1);
+			v2 = RenderTarget.Viewport.ViewportToScreenCoords(v2);
+
 			FVector4f c0 = Command.Mesh.Colors[VertexIndex + 0];
 			FVector4f c1 = Command.Mesh.Colors[VertexIndex + 1];
 			FVector4f c2 = Command.Mesh.Colors[VertexIndex + 2];
@@ -64,6 +68,12 @@ namespace Rasterizer
 				Memory::Swap(v1, v2);
 				Determinant012 = -Determinant012;
 			}
+
+			// Clamp to within screen/pixel coords, in case the Viewport is larger than the screen
+			int32_t xMin = Math::Max<int32_t>(0, RenderTarget.Viewport.xMin);
+			int32_t yMin = Math::Max<int32_t>(0, RenderTarget.Viewport.yMin);
+			int32_t xMax = Math::Min<int32_t>(RenderTarget.ColorBuffer.Width, RenderTarget.Viewport.xMax) - 1;
+			int32_t yMax = Math::Min<int32_t>(RenderTarget.ColorBuffer.Height, RenderTarget.Viewport.yMax) - 1;
 
 			// Calc AABB of the mesh
 			int32_t xMin = Math::Min({ Math::Floor(v0.X),	Math::Floor(v1.X),	Math::Floor(v2.X)	});
