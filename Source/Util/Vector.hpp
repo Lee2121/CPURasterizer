@@ -36,6 +36,15 @@ struct FVector4f
 		default: throw;
 		}
 	}
+
+	inline FVector4f PerspectiveDivide()
+	{
+		FVector4f Return = *this;
+		Return.X /= Return.W;
+		Return.Y /= Return.W;
+		Return.Z /= Return.W;
+		return Return;
+	}
 };
 
 inline FVector4f operator- (const FVector4f& v0, const FVector4f& v1)

@@ -18,6 +18,8 @@ struct FMatrix4x4f
 	static FMatrix4x4f RotateYZ(float Angle);
 	static FMatrix4x4f RotateZX(float Angle);
 
+	static FMatrix4x4f Perspective(float Near, float Far, float FovY, float AspectRatio);
+
 	inline float& operator[](size_t Index)
 	{
 		return Values[Index];

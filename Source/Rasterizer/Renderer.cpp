@@ -57,6 +57,11 @@ namespace Rasterizer
 			FVector4f v1 = Command.Transform * Command.Mesh.Positions[VertexIndex1].AsVector4f(1.f);
 			FVector4f v2 = Command.Transform * Command.Mesh.Positions[VertexIndex2].AsVector4f(1.f);
 
+			// Apply perspective divide transform to our vertices, dividing the vector 4 by its W value
+			v0 = v0.PerspectiveDivide();
+			v1 = v1.PerspectiveDivide();
+			v2 = v2.PerspectiveDivide();
+
 			v0 = RenderTarget.Viewport.ViewportToScreenCoords(v0);
 			v1 = RenderTarget.Viewport.ViewportToScreenCoords(v1);
 			v2 = RenderTarget.Viewport.ViewportToScreenCoords(v2);
