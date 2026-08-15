@@ -5,6 +5,10 @@
 
 #include "Rasterizer/Renderer.hpp"
 
+#include "Rasterizer/Shapes/Cube.hpp"
+#include "Rasterizer/Shapes/Triangle.hpp"
+#include "Rasterizer/Shapes/Rectangle.hpp"
+
 using namespace Rasterizer;
 
 int main()
@@ -96,47 +100,7 @@ int main()
 
 			Rasterizer::Clear(RenderTarget, { 0.9f, 0.9f, 0.9f, 1.f });
 
-			FVector3f Vertices[] =
-			{
-				{-0.5f, -0.5f, 0.f},
-				{-0.5f,  0.5f, 0.f},
-				{ 0.5f, -0.5f, 0.f},
-				{ 0.5f,	 0.5f, 0.f},
-			};
-
-			FVector4f Colors[] =
-			{
-				{1.f, 0.f, 0.f, 1.f},
-				{0.f, 1.f, 0.f, 1.f},
-				{0.f, 0.f, 1.f, 1.f},
-				{1.f, 1.f, 1.f, 1.f},
-			};
-
-			uint32_t Indices[]
-			{
-				0, 1, 2,
-				2, 1, 3,
-			};
-
-			FMesh TriangleMesh
-			{
-				// Positions
-				{ 
-					Vertices 
-				},
-				// Colors
-				{ 
-					Colors 
-				},
-				// Indices
-				{
-					Indices
-				},
-				// Count
-				6
-			};
-
-			Transform.ApplyRotationXY(1 * DeltaTime);
+			Transform.ApplyRotationZX(1 * DeltaTime);
 			//Transform.ApplyTranslation({1 * DeltaTime, 0, 0});
 			//Transform = FMatrix4x4f::Identity();
 
@@ -144,7 +108,9 @@ int main()
 			{
 				// Mesh
 				{
-					TriangleMesh
+					//Rasterizer::Triangle
+					Rasterizer::Cube
+					//Rasterizer::Rectangle
 				},
 				// CullMode
 				{

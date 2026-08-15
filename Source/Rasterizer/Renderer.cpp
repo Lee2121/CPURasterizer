@@ -40,11 +40,11 @@ namespace Rasterizer
 			};
 
 		// Loop through groups of three vertices that make up a triangle without overshooting
-		for (uint32_t VertexIndex = 0; VertexIndex + 2 < Command.Mesh.Count; VertexIndex += 3)
+		for (size_t VertexIndex = 0; VertexIndex + 2 < Command.Mesh.Count; VertexIndex += 3)
 		{
-			uint32_t VertexIndex0 = VertexIndex + 0;
-			uint32_t VertexIndex1 = VertexIndex + 1;
-			uint32_t VertexIndex2 = VertexIndex + 2;
+			size_t VertexIndex0 = VertexIndex + 0;
+			size_t VertexIndex1 = VertexIndex + 1;
+			size_t VertexIndex2 = VertexIndex + 2;
 
 			if (nullptr != Command.Mesh.Indices)
 			{
@@ -98,10 +98,10 @@ namespace Rasterizer
 			xMax = Math::Min<int32_t>(xMax, RenderTarget.ColorBuffer.Width);
 			yMax = Math::Min<int32_t>(yMax, RenderTarget.ColorBuffer.Height);
 
-			// Pre-calc if any edges are top or left
-			const bool b01IsTopOrLeftEdge = IsLeftOrTopEdge(v0, v1);
-			const bool b12IsTopOrLeftEdge = IsLeftOrTopEdge(v1, v2);
-			const bool b20IsTopOrLeftEdge = IsLeftOrTopEdge(v2, v0);
+			//// Pre-calc if any edges are top or left
+			//const bool b01IsTopOrLeftEdge = IsLeftOrTopEdge(v0, v1);
+			//const bool b12IsTopOrLeftEdge = IsLeftOrTopEdge(v1, v2);
+			//const bool b20IsTopOrLeftEdge = IsLeftOrTopEdge(v2, v0);
 
 			for (int32_t y = yMin; y < yMax; y++)
 			{
@@ -113,10 +113,10 @@ namespace Rasterizer
 					float Determinant12ToPoint = Determinant2D(v2 - v1, Point - v1);
 					float Determinant20ToPoint = Determinant2D(v0 - v2, Point - v2);
 
-					// Fill rule to fix multiple tris with overlapping edges. Uses the "top left" fill rule - https://kristoffer-dyrkorn.github.io/triangle-rasterizer/4
-					Determinant01ToPoint = b01IsTopOrLeftEdge ? Determinant01ToPoint - .5f : Determinant01ToPoint;
-					Determinant12ToPoint = b12IsTopOrLeftEdge ? Determinant12ToPoint - .5f : Determinant12ToPoint;
-					Determinant20ToPoint = b20IsTopOrLeftEdge ? Determinant20ToPoint - .5f : Determinant20ToPoint;
+					//// Fill rule to fix multiple tris with overlapping edges. Uses the "top left" fill rule - https://kristoffer-dyrkorn.github.io/triangle-rasterizer/4
+					//Determinant01ToPoint = b01IsTopOrLeftEdge ? Determinant01ToPoint - 1.f : Determinant01ToPoint;
+					//Determinant12ToPoint = b12IsTopOrLeftEdge ? Determinant12ToPoint - 1.f : Determinant12ToPoint;
+					//Determinant20ToPoint = b20IsTopOrLeftEdge ? Determinant20ToPoint - 1.f : Determinant20ToPoint;
 
 					if (Determinant01ToPoint >= 0.f && Determinant12ToPoint >= 0.f && Determinant20ToPoint >= 0.f)
 					{
