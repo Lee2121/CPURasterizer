@@ -28,7 +28,6 @@ int main()
 	auto LastFrameStart = Clock::now();
 
 	float TotalTime = 0;
-	FMatrix4x4f Transform = FMatrix4x4f::Identity();
 
 	bool bRunning = true;
 	while (bRunning)
@@ -100,16 +99,15 @@ int main()
 
 			Rasterizer::Clear(RenderTarget, { 0.9f, 0.9f, 0.9f, 1.f });
 
-			Transform.SetScale({ ((Height * 1.f / Width) * .5f), .5f, .5f });
-			Transform.RotateZX(30 * DeltaTime);
+			FMatrix4x4f Transform = FMatrix4x4f::Scale(0.5f) * FMatrix4x4f::RotateZX(TotalTime);
 
 			FDrawCommand DrawCommand
 			{
 				// Mesh
 				{
 					//Rasterizer::Triangle
-					//Rasterizer::Cube
-					Rasterizer::Rectangle
+					Rasterizer::Cube
+					//Rasterizer::Rectangle
 				},
 				// CullMode
 				{

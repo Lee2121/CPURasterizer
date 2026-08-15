@@ -9,14 +9,14 @@ struct FMatrix4x4f
 	static FMatrix4x4f Identity();
 	static FMatrix4x4f Zero();
 
-	void SetScale(const FVector3f& S);
-	void SetScale(const float& S);
+	static FMatrix4x4f Scale(const FVector3f& S);
+	static FMatrix4x4f Scale(const float& S);
 
-	void Translate(const FVector3f& T);
+	static FMatrix4x4f Translate(const FVector3f& T);
 
-	void RotateXY(float Angle);
-	void RotateYZ(float Angle);
-	void RotateZX(float Angle);
+	static FMatrix4x4f RotateXY(float Angle);
+	static FMatrix4x4f RotateYZ(float Angle);
+	static FMatrix4x4f RotateZX(float Angle);
 
 	inline float& operator[](size_t Index)
 	{
