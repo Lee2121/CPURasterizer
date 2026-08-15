@@ -68,6 +68,28 @@ struct FVector3f
 	{
 		return { X, Y, Z, w };
 	}
+
+	inline float& operator[](size_t Index)
+	{
+		switch (Index)
+		{
+		case 0:	return X;
+		case 1:	return Y;
+		case 2:	return Z;
+		default: throw;
+		}
+	}
+
+	inline const float& operator[](size_t Index) const
+	{
+		switch (Index)
+		{
+		case 0:	return X;
+		case 1:	return Y;
+		case 2:	return Z;
+		default: throw;
+		}
+	}
 };
 
 inline FVector3f operator- (const FVector3f& v0, const FVector3f& v1)

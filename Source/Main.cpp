@@ -24,6 +24,7 @@ int main()
 	auto LastFrameStart = Clock::now();
 
 	float TotalTime = 0;
+	FMatrix4x4f Transform = FMatrix4x4f::Identity();
 
 	bool bRunning = true;
 	while (bRunning)
@@ -135,6 +136,10 @@ int main()
 				6
 			};
 
+			Transform.ApplyRotationXY(1 * DeltaTime);
+			//Transform.ApplyTranslation({1 * DeltaTime, 0, 0});
+			//Transform = FMatrix4x4f::Identity();
+
 			FDrawCommand DrawCommand
 			{
 				// Mesh
@@ -147,7 +152,7 @@ int main()
 				},
 				// Transform
 				{
-					FMatrix4x4f::Identity()
+					Transform
 				},
 			};
 
