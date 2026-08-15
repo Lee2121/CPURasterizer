@@ -100,17 +100,16 @@ int main()
 
 			Rasterizer::Clear(RenderTarget, { 0.9f, 0.9f, 0.9f, 1.f });
 
-			Transform.ApplyRotationZX(1 * DeltaTime);
-			//Transform.ApplyTranslation({1 * DeltaTime, 0, 0});
-			//Transform = FMatrix4x4f::Identity();
+			Transform.SetScale({ ((Height * 1.f / Width) * .5f), .5f, .5f });
+			Transform.RotateZX(30 * DeltaTime);
 
 			FDrawCommand DrawCommand
 			{
 				// Mesh
 				{
 					//Rasterizer::Triangle
-					Rasterizer::Cube
-					//Rasterizer::Rectangle
+					//Rasterizer::Cube
+					Rasterizer::Rectangle
 				},
 				// CullMode
 				{

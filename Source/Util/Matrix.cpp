@@ -25,26 +25,23 @@ FMatrix4x4f FMatrix4x4f::Zero()
 	};
 }
 
-void FMatrix4x4f::ApplyScale(const FVector3f& S)
+void FMatrix4x4f::SetScale(const FVector3f& S)
 {
 	// X 0 0 0
 	// 0 Y 0 0
 	// 0 0 Z 0
 	// 0 0 0 0
-	FMatrix4x4f ScaleMatrix = FMatrix4x4f::Identity();
-	ScaleMatrix[0]  = S.X;
-	ScaleMatrix[5]  = S.Y;
-	ScaleMatrix[10] = S.Z;
-
-	*this = (*this * ScaleMatrix);
+	Values[0]  = S.X;
+	Values[5]  = S.Y;
+	Values[10] = S.Z;
 }
 
-void FMatrix4x4f::ApplyScale(const float& S)
+void FMatrix4x4f::SetScale(const float& S)
 {
-	ApplyScale({S, S, S});
+	SetScale({S, S, S});
 }
 
-void FMatrix4x4f::ApplyTranslation(const FVector3f& T)
+void FMatrix4x4f::Translate(const FVector3f& T)
 {
 	// 0 0 0 X
 	// 0 0 0 Y
@@ -58,7 +55,7 @@ void FMatrix4x4f::ApplyTranslation(const FVector3f& T)
 	*this = (*this * TranslationMatrix);
 }
 
-void FMatrix4x4f::ApplyRotationXY(float Angle)
+void FMatrix4x4f::RotateXY(float Angle)
 {
 	float Cos = cos(Angle);
 	float Sin = sin(Angle);
@@ -76,7 +73,7 @@ void FMatrix4x4f::ApplyRotationXY(float Angle)
 	*this = (*this * RotationMatrix);
 }
 
-void FMatrix4x4f::ApplyRotationYZ(float Angle)
+void FMatrix4x4f::RotateYZ(float Angle)
 {
 	float Cos = cos(Angle);
 	float Sin = sin(Angle);
@@ -94,7 +91,7 @@ void FMatrix4x4f::ApplyRotationYZ(float Angle)
 	*this = (*this * RotationMatrix);
 }
 
-void FMatrix4x4f::ApplyRotationZX(float Angle)
+void FMatrix4x4f::RotateZX(float Angle)
 {
 	float Cos = cos(Angle);
 	float Sin = sin(Angle);
