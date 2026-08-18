@@ -86,8 +86,6 @@ int main()
 			{
 				// FImageView
 				{
-
-
 					(FColor4ub*)DrawSurface->pixels,
 					Width,
 					Height
@@ -103,11 +101,11 @@ int main()
 
 			Rasterizer::Clear(RenderTarget, { 0.9f, 0.9f, 0.9f, 1.f });
 
-			FMatrix4x4f Transform = 
-				FMatrix4x4f::Perspective(0.01f, 10.f, M_PI / 3.f, Width * 1.f / Height)
-				* FMatrix4x4f::Translate({0.f, 0.f, -5.f})
-				* FMatrix4x4f::RotateZX(TotalTime)
-				* FMatrix4x4f::RotateXY(TotalTime * 1.5f);
+			FMatrix4x4f Model = FMatrix4x4f::Translate({0.f, 0.f, -4.f})
+									* FMatrix4x4f::RotateZX(TotalTime)
+									* FMatrix4x4f::RotateXY(TotalTime * 1.5f);
+
+			FMatrix4x4f Projection = FMatrix4x4f::Perspective(4.f, 4.5f, M_PI / 3.f, Width * 1.f / Height);
 
 			FDrawCommand DrawCommand
 			{
@@ -119,11 +117,11 @@ int main()
 				},
 				// CullMode
 				{
-					ECullMode::CounterClockWise
+					ECullMode::None
 				},
 				// Transform
 				{
-					Transform
+					Projection * Model
 				},
 			};
 

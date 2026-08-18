@@ -45,6 +45,11 @@ struct FVector4f
 		Return.Z /= Return.W;
 		return Return;
 	}
+
+	inline float Dot(const FVector4f& Other)
+	{
+		return (X * Other.X) + (Y * Other.Y) + (Z * Other.Z) + (W * Other.W);
+	}
 };
 
 inline FVector4f operator- (const FVector4f& v0, const FVector4f& v1)
@@ -60,6 +65,11 @@ inline FVector4f operator+ (const FVector4f& v0, const FVector4f& v1)
 inline FVector4f operator* (const FVector4f& v0, const float& f)
 {
 	return { v0.X * f, v0.Y * f, v0.Z * f, v0.W * f };
+}
+
+inline FVector4f operator* (const float& f, const FVector4f& v0)
+{
+	return v0 * f;
 }
 
 inline float Determinant2D(const FVector4f& v0, const FVector4f& v1)

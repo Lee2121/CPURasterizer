@@ -15,4 +15,15 @@ namespace Memory
 		A = Move(B);
 		B = Move(Temp);
 	}
+
+	// Copies all of the values found in the array between First and Last into the Destination array.
+	template <typename Iterator>
+	Iterator Copy(Iterator First, Iterator Last, Iterator Destination)
+	{
+		for (; First != Last; (void*)++First, (void*)++Destination)
+		{
+			Destination = First;
+		}
+		return Destination;
+	}
 }
