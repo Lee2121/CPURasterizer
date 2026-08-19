@@ -103,9 +103,9 @@ int main()
 
 			FMatrix4x4f Model = FMatrix4x4f::Translate({0.f, 0.f, -4.f})
 									* FMatrix4x4f::RotateZX(TotalTime)
-									* FMatrix4x4f::RotateXY(TotalTime * 1.5f);
+									* FMatrix4x4f::RotateXY(TotalTime * 1.61f);
 
-			FMatrix4x4f Projection = FMatrix4x4f::Perspective(4.f, 4.5f, M_PI / 3.f, Width * 1.f / Height);
+			FMatrix4x4f Projection = FMatrix4x4f::Perspective(4.f, 10.f, M_PI / 3.f, Width * 1.f / Height);
 
 			FDrawCommand DrawCommand
 			{
@@ -117,7 +117,7 @@ int main()
 				},
 				// CullMode
 				{
-					ECullMode::None
+					ECullMode::CounterClockWise
 				},
 				// Transform
 				{
@@ -127,11 +127,11 @@ int main()
 
 			Rasterizer::Draw(RenderTarget, DrawCommand);
 
-			SDL_Rect Rect;
-			Rect.x = 0;
-			Rect.y = 0;
-			Rect.w = Width;
-			Rect.h = Height;
+			SDL_Rect Rect
+			{
+				0, 0,			// Position
+				Width, Height	// Dimensions
+			};
 
 			SDL_BlitSurface(DrawSurface, &Rect, SDL_GetWindowSurface(Window), &Rect);
 			SDL_UpdateWindowSurface(Window);

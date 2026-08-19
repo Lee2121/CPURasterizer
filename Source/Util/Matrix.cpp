@@ -99,7 +99,7 @@ FMatrix4x4f FMatrix4x4f::Perspective(float Near, float Far, float FovY, float As
 	{
 		Near/Right,	0.f,		0.f,							0.f,
 		0.f,		Near/Top,	0.f,							0.f,
-		0.f,		0.f,		-(Far + Near) / (Far - Near),	-(2 * Far * Near) / (Far - Near),
+		0.f,		0.f,		-(Far + Near) / (Far - Near),	-2.f * Far * Near / (Far - Near),
 		0.f,		0.f,		-1,								0,
 	};
 }
