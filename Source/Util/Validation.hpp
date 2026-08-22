@@ -66,19 +66,5 @@ namespace ValidationInternal
 		}
 	};
 
-	void Internal_Ensure(const char* Text, const char* File, int Line, const char* Msg = nullptr)
-	{
-		FTrackedEnsure NewEnsure = FTrackedEnsure(File, Line);
-		if (FTrackedEnsureList::GetInstance().AddTrackedEnsure(NewEnsure))
-		{
-			std::cerr << "Ensure Failed: " << File << " [" << Line << "] " << Text;
-			if (nullptr != Msg)
-			{
-				std::cerr << " -- " << Msg;
-			}
-			std::cerr << std::endl;
-
-			__debugbreak();
-		}
-	}
+	void Internal_Ensure(const char* Text, const char* File, int Line, const char* Msg = nullptr);
 }
