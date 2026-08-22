@@ -333,16 +333,6 @@ namespace Rasterizer
 
 							FColor4ub Color = FColor4ub::FromVector4F(v0.Color * Color0Alpha + v1.Color * Color1Alpha + v2.Color * Color2Alpha);
 
-							// TEMP - Draws a checkerboard for the rectangle example
-							if (int(Math::Floor((Color.R / 255.f) * 8) + Math::Floor((Color.G / 255.f) * 8)) % 2 == 0)
-							{
-								Color = FColor4ub::BLACK;
-							}
-							else
-							{
-								Color = FColor4ub::WHITE;
-							}
-
 							RenderTarget.ColorBuffer.GetPixelAtPos(x, y) = Color;
 						}
 					}

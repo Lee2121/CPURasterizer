@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(CPURasterizer)
 
+set(CMAKE_CXX_STANDARD 20)
+
 file(GLOB_RECURSE RASTERIZER_HEADERS "Source/*.hpp")
 file(GLOB_RECURSE RASTERIZER_SOURCES "Source/*.cpp")
 

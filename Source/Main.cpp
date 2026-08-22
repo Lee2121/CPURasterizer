@@ -1,7 +1,5 @@
 #include <SDL3/SDL.h>
 
-#define _USE_MATH_DEFINES 1
-
 #include <chrono>
 #include <iostream>
 
@@ -98,13 +96,18 @@ int main()
 
 			Rasterizer::Clear(RenderTarget, { 0.9f, 0.9f, 0.9f, 1.f });
 
-			//TestScenes::UTestScene_Cube TestScene;
-			TestScenes::UTestScene_Rectangle TestScene;
+			FDrawCommand DrawCommandsBuffer[MAX_DRAW_COMMANDS];
+
+			TestScenes::UTestScene_Cube TestScene;
+			//TestScenes::UTestScene_Rectangle TestScene;
 			
-			FDrawCommand DrawCommand = TestScene.GenerateDrawCommand(TotalTime, Width, Height);
+			TestScene.GenerateDrawCommands(DrawCommandsBuffer, TotalTime, Width, Height);
 
-			Rasterizer::Draw(RenderTarget, DrawCommand);
-
+			for (int i = 0; i < TestScene.NumDrawCommands; ++i)
+			{
+				Rasterizer::Draw(RenderTarget, DrawCommandsBuffer[i]);
+			}
+			
 			SDL_Rect Rect
 			{
 				0, 0,					// Position
