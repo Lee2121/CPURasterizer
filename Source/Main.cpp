@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "Rasterizer/Renderer.hpp"
+#include "Rasterizer/Image.hpp"
 #include "TestScenes/TestScene.hpp"
 
 using namespace Rasterizer;
@@ -14,6 +15,8 @@ int main()
 
 	uint32_t Width = 800;
 	uint32_t Height = 600;
+
+	FImage<uint32_t> DepthBuffer;
 
 	SDL_Window* Window = SDL_CreateWindow("CPU Rasterizer", Width, Height, SDL_WINDOW_RESIZABLE);
 	SDL_Surface* DrawSurface = nullptr;
@@ -39,6 +42,10 @@ int main()
 					{
 						SDL_DestroySurface(DrawSurface);
 						DrawSurface = nullptr;
+					}
+					if (DepthBuffer.IsValid())
+					{
+						DepthBuffer.Deallocate();
 					}
 					Width = Event.window.data1;
 					Height = Event.window.data2;
@@ -77,20 +84,29 @@ int main()
 				SDL_SetSurfaceBlendMode(DrawSurface, SDL_BLENDMODE_NONE);
 			}
 
+			if (!DepthBuffer.IsValid())
+			{
+				DepthBuffer.Allocate<uint32_t>(Width, Height);
+			}
+
 			FRenderTarget RenderTarget
 			{
-				// FImageView
+				.FrameBuffer
 				{
-					(FColor4ub*)DrawSurface->pixels,
-					Width,
-					Height
+					.Color
+					{
+						.Pixels = (FColor4ub*)DrawSurface->pixels,
+						.Width = Width,
+						.Height = Height,
+					},
+					.Depth = DepthBuffer.AsImageView<uint32_t>(),
 				},
-				// FViewport
+				.Viewport
 				{
-					0,
-					RenderTarget.ColorBuffer.Width,
-					0,
-					RenderTarget.ColorBuffer.Height,
+					.xMin = 0,
+					.xMax = Width,
+					.yMin = 0,
+					.yMax = Height,
 				}
 			};
 

@@ -193,8 +193,8 @@ namespace Rasterizer
 
 	void Clear(const FRenderTarget& RenderTarget, const FVector4f& Color)
 	{
-		FColor4ub* Pixels = RenderTarget.ColorBuffer.Pixels;
-		uint32_t Size = RenderTarget.ColorBuffer.Width * RenderTarget.ColorBuffer.Height;
+		FColor4ub* Pixels = RenderTarget.FrameBuffer.Color.Pixels;
+		uint32_t Size = RenderTarget.FrameBuffer.GetWidth() * RenderTarget.FrameBuffer.GetHeight();
 		for (uint32_t i = 0; i < Size; i++)
 		{
 			Pixels[i] = FColor4ub::FromVector4F(Color);
@@ -283,8 +283,8 @@ namespace Rasterizer
 				// Clamp to within screen/pixel coords, in case the Viewport is larger than the screen
 				int32_t xMin = Math::Max<int32_t>(0, RenderTarget.Viewport.xMin);
 				int32_t yMin = Math::Max<int32_t>(0, RenderTarget.Viewport.yMin);
-				int32_t xMax = Math::Min<int32_t>(RenderTarget.ColorBuffer.Width, RenderTarget.Viewport.xMax) - 1;
-				int32_t yMax = Math::Min<int32_t>(RenderTarget.ColorBuffer.Height, RenderTarget.Viewport.yMax) - 1;
+				int32_t xMax = Math::Min<int32_t>(RenderTarget.FrameBuffer.GetWidth(), RenderTarget.Viewport.xMax) - 1;
+				int32_t yMax = Math::Min<int32_t>(RenderTarget.FrameBuffer.GetHeight(), RenderTarget.Viewport.yMax) - 1;
 
 				// Clamp to within AABB of the mesh
 				xMin = Math::Min({ Math::Floor(v0.Position.X),	Math::Floor(v1.Position.X),	Math::Floor(v2.Position.X)	});
@@ -295,8 +295,8 @@ namespace Rasterizer
 				// Clamp to color buffer bounds
 				xMin = Math::Max<int32_t>(xMin, 0);
 				yMin = Math::Max<int32_t>(yMin, 0);
-				xMax = Math::Min<int32_t>(xMax, RenderTarget.ColorBuffer.Width);
-				yMax = Math::Min<int32_t>(yMax, RenderTarget.ColorBuffer.Height);
+				xMax = Math::Min<int32_t>(xMax, RenderTarget.FrameBuffer.GetWidth());
+				yMax = Math::Min<int32_t>(yMax, RenderTarget.FrameBuffer.GetHeight());
 
 				//// Pre-calc if any edges are top or left
 				//const bool b01IsTopOrLeftEdge = IsLeftOrTopEdge(v0, v1);
@@ -333,7 +333,8 @@ namespace Rasterizer
 
 							FColor4ub Color = FColor4ub::FromVector4F(v0.Color * Color0Alpha + v1.Color * Color1Alpha + v2.Color * Color2Alpha);
 
-							RenderTarget.ColorBuffer.GetPixelAtPos(x, y) = Color;
+							ENSURE_EXIT(RenderTarget.FrameBuffer.Color.IsValid());
+							RenderTarget.FrameBuffer.Color.GetPixelAtPos(x, y) = Color;
 						}
 					}
 				}

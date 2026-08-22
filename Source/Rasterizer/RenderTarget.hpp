@@ -1,13 +1,13 @@
 #pragma once
 
-#include "ImageView.hpp"
+#include "FrameBuffer.hpp"
 #include "Viewport.hpp"
 
 namespace Rasterizer
 {
 	struct FRenderTarget
 	{
-		FImageView ColorBuffer;
+		FFrameBuffer FrameBuffer;
 		FViewport Viewport;
 	};
 }
