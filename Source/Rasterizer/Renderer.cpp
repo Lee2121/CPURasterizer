@@ -244,8 +244,8 @@ namespace Rasterizer
 			UnclippedV2.Position = Command.Transform * Command.Mesh.Positions[VertexIndex2].AsVector4f(1.f);
 			
 			UnclippedV0.Color = Command.Mesh.Colors[VertexIndex0];
-			UnclippedV1.Color = Command.Mesh.Colors[VertexIndex0];  
-			UnclippedV2.Color = Command.Mesh.Colors[VertexIndex0];
+			UnclippedV1.Color = Command.Mesh.Colors[VertexIndex1];
+			UnclippedV2.Color = Command.Mesh.Colors[VertexIndex2];
 
 			FTriangleClipper TriangleClipper = FTriangleClipper(UnclippedV0, UnclippedV1, UnclippedV2);
 			TriangleClipper.Clip();
@@ -320,11 +320,30 @@ namespace Rasterizer
 
 						if (Determinant01ToPoint >= 0.f && Determinant12ToPoint >= 0.f && Determinant20ToPoint >= 0.f)
 						{
-							float Color0Alpha = Determinant12ToPoint / Determinant012;
-							float Color1Alpha = Determinant20ToPoint / Determinant012;
-							float Color2Alpha = Determinant01ToPoint / Determinant012;
+							float Color0Alpha = Determinant12ToPoint / Determinant012 * v0.Position.W;
+							float Color1Alpha = Determinant20ToPoint / Determinant012 * v1.Position.W;
+							float Color2Alpha = Determinant01ToPoint / Determinant012 * v2.Position.W;
 
-							RenderTarget.ColorBuffer.GetPixelAtPos(x, y) = FColor4ub::FromVector4F(v0.Color * Color0Alpha + v1.Color * Color1Alpha + v2.Color * Color2Alpha);
+							float ColorInterpolationMagnitude = Color0Alpha + Color1Alpha + Color2Alpha;
+
+							// Normalize the interpolated colors
+							Color0Alpha /= ColorInterpolationMagnitude;
+							Color1Alpha /= ColorInterpolationMagnitude;
+							Color2Alpha /= ColorInterpolationMagnitude;
+
+							FColor4ub Color = FColor4ub::FromVector4F(v0.Color * Color0Alpha + v1.Color * Color1Alpha + v2.Color * Color2Alpha);
+
+							// TEMP - Draws a checkerboard for the rectangle example
+							if (int(Math::Floor((Color.R / 255.f) * 8) + Math::Floor((Color.G / 255.f) * 8)) % 2 == 0)
+							{
+								Color = FColor4ub::BLACK;
+							}
+							else
+							{
+								Color = FColor4ub::WHITE;
+							}
+
+							RenderTarget.ColorBuffer.GetPixelAtPos(x, y) = Color;
 						}
 					}
 				}

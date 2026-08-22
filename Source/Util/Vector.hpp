@@ -43,6 +43,7 @@ struct FVector4f
 		Return.X /= Return.W;
 		Return.Y /= Return.W;
 		Return.Z /= Return.W;
+		Return.W = (1 / Return.W);
 		return Return;
 	}
 
@@ -50,12 +51,6 @@ struct FVector4f
 	{
 		return (X * Other.X) + (Y * Other.Y) + (Z * Other.Z) + (W * Other.W);
 	}
-
-	#define RED		FVector4f({ 1.f, 0.f, 0.f, 1.f });
-	#define GREEN	FVector4f({ 0.f, 1.f, 0.f, 1.f });
-	#define BLUE	FVector4f({ 0.f, 0.f, 1.f, 1.f });
-	#define WHITE	FVector4f({ 1.f, 1.f, 1.f, 1.f });
-	#define BLACK	FVector4f({ 0.f, 0.f, 0.f, 1.f });
 };
 
 inline FVector4f operator- (const FVector4f& v0, const FVector4f& v1)

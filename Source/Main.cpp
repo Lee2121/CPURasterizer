@@ -6,10 +6,7 @@
 #include <iostream>
 
 #include "Rasterizer/Renderer.hpp"
-
-#include "Rasterizer/Shapes/Cube.hpp"
-#include "Rasterizer/Shapes/Triangle.hpp"
-#include "Rasterizer/Shapes/Rectangle.hpp"
+#include "TestScenes/TestScene.hpp"
 
 using namespace Rasterizer;
 
@@ -101,36 +98,17 @@ int main()
 
 			Rasterizer::Clear(RenderTarget, { 0.9f, 0.9f, 0.9f, 1.f });
 
-			FMatrix4x4f Model = FMatrix4x4f::Translate({0.f, 0.f, -4.f})
-									* FMatrix4x4f::RotateZX(TotalTime)
-									* FMatrix4x4f::RotateXY(TotalTime * 1.61f);
-
-			FMatrix4x4f Projection = FMatrix4x4f::Perspective(4.f, 10.f, M_PI / 3.f, Width * 1.f / Height);
-
-			FDrawCommand DrawCommand
-			{
-				// Mesh
-				{
-					//Rasterizer::Triangle
-					Rasterizer::Cube
-					//Rasterizer::Rectangle
-				},
-				// CullMode
-				{
-					ECullMode::CounterClockWise
-				},
-				// Transform
-				{
-					Projection * Model
-				},
-			};
+			//TestScenes::UTestScene_Cube TestScene;
+			TestScenes::UTestScene_Rectangle TestScene;
+			
+			FDrawCommand DrawCommand = TestScene.GenerateDrawCommand(TotalTime, Width, Height);
 
 			Rasterizer::Draw(RenderTarget, DrawCommand);
 
 			SDL_Rect Rect
 			{
-				0, 0,			// Position
-				Width, Height	// Dimensions
+				0, 0,					// Position
+				(int)Width, (int)Height	// Dimensions
 			};
 
 			SDL_BlitSurface(DrawSurface, &Rect, SDL_GetWindowSurface(Window), &Rect);

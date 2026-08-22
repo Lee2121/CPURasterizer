@@ -23,5 +23,21 @@ namespace Rasterizer
 			Result.A = static_cast<uint8_t>(Math::Max(0.f, Math::Min(255.f, C.W * 255.f)));
 			return Result;
 		}
+
+		static inline FVector4f ToVector4f(const FColor4ub& C)
+		{
+			FVector4f Result;
+			Result.X = static_cast<uint8_t>(C.R / 255.f);
+			Result.Y = static_cast<uint8_t>(C.G / 255.f);
+			Result.Z = static_cast<uint8_t>(C.B / 255.f);
+			Result.W = static_cast<uint8_t>(C.A / 255.f);
+			return Result;
+		}
+
+	#define RED		FColor4ub({ (uint8_t)255.f,	(uint8_t)0.f,	(uint8_t)0.f,	(uint8_t)255.f });
+	#define GREEN	FColor4ub({ (uint8_t)0.f,	(uint8_t)255.f,	(uint8_t)0.f,	(uint8_t)255.f });
+	#define BLUE	FColor4ub({ (uint8_t)0.f,	(uint8_t)0.f,	(uint8_t)255.f,	(uint8_t)255.f });
+	#define WHITE	FColor4ub({ (uint8_t)255.f,	(uint8_t)255.f,	(uint8_t)255.f,	(uint8_t)255.f });
+	#define BLACK	FColor4ub({ (uint8_t)0.f,	(uint8_t)0.f,	(uint8_t)0.f,	(uint8_t)255.f });
 	};
 }

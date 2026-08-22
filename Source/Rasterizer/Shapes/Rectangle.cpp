@@ -6,18 +6,18 @@ namespace Rasterizer
 {
 	static FVector3f RectanglePositions[] =
 	{
-		{-0.5f, -0.5f, 0.f},
-		{-0.5f,  0.5f, 0.f},
-		{ 0.5f, -0.5f, 0.f},
-		{ 0.5f,	 0.5f, 0.f},
+		{-1.f, -1.f, 0.f},
+		{ 1.f, -1.f, 0.f},
+		{-1.f,  1.f, 0.f},
+		{ 1.f,  1.f, 0.f},
 	};
 
 	static FVector4f RectangleColors[] =
 	{
+		{0.f, 0.f, 0.f, 1.f},
 		{1.f, 0.f, 0.f, 1.f},
 		{0.f, 1.f, 0.f, 1.f},
-		{0.f, 0.f, 1.f, 1.f},
-		{1.f, 1.f, 1.f, 1.f},
+		{1.f, 1.f, 0.f, 1.f},
 	};
 
 	static size_t RectangleIndices[] =

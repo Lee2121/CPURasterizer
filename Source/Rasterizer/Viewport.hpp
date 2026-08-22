@@ -13,7 +13,7 @@ namespace Rasterizer
 
 		inline FVector4f ViewportToScreenCoords(const FVector4f& ViewportCoords) const
 		{
-			FVector4f ScreenCoords;
+			FVector4f ScreenCoords = ViewportCoords;
 			ScreenCoords.X = xMin + (xMax - xMin) * (0.5f + 0.5f * ViewportCoords.X);
 			ScreenCoords.Y = yMin + (yMax - yMin) * (0.5f - 0.5f * ViewportCoords.Y);
 			return ScreenCoords;
