@@ -1,6 +1,7 @@
 #pragma once
 
-#include "ImageView.hpp"
+#include <cstdint>
+#include <memory>
 
 #include "Util/Validation.hpp"
 
@@ -16,32 +17,36 @@ namespace Rasterizer
 		bool IsValid() const { return nullptr != Pixels; }
 	
 		template <typename TPixel>
-		static FImage Allocate(uint32_t Width, uint32_t Height)
+		void Allocate(uint32_t InWidth, uint32_t InHeight)
 		{
-			return FImage
-			{
-				.Pixels = new TPixel[Width * Height],
-			};
+			ENSURE_EXIT(!IsValid(), "Attempting to allocate already allocated image.");
+
+			Pixels = new TPixel[InWidth * InHeight];
+			Width = InWidth;
+			Height = InHeight;
 		}
 
 		void Deallocate()
 		{
 			ENSURE_EXIT(IsValid());
-			delete Pixels;
+			delete[] Pixels;
+			Pixels = nullptr;
 			Width = 0;
 			Height = 0;
 		}
 
-		template <typename TPixel>
-		FImageView<TPixel> AsImageView()
+		TPixel& GetPixelAtPos(uint32_t x, uint32_t y) const
 		{
-			ENSURE_EXIT(IsValid()) FImageView<TPixel>{};
-			return FImageView<TPixel>
+			return Pixels[x + y * Width];
+		}
+
+		void Fill(TPixel FillValue)
+		{
+			ENSURE_EXIT(IsValid());
+			for (uint32_t i = 0; i < Width * Height; ++i)
 			{
-				.Pixels = Pixels,
-				.Width = Width,
-				.Height = Height
-			};
+				Pixels[i] = FillValue;
+			}
 		}
 	};
 }

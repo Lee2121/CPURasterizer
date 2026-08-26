@@ -85,7 +85,7 @@ int main()
 			}
 
 			if (!DepthBuffer.IsValid())
-			{
+			{	
 				DepthBuffer.Allocate<uint32_t>(Width, Height);
 			}
 
@@ -99,7 +99,7 @@ int main()
 						.Width = Width,
 						.Height = Height,
 					},
-					.Depth = DepthBuffer.AsImageView<uint32_t>(),
+					.Depth = DepthBuffer,
 				},
 				.Viewport
 				{
@@ -110,11 +110,11 @@ int main()
 				}
 			};
 
-			Rasterizer::Clear(RenderTarget, { 0.9f, 0.9f, 0.9f, 1.f });
+			Rasterizer::Clear(RenderTarget, { 0.9f, 0.9f, 0.9f, 1.f }, UINT32_MAX);
 
 			FDrawCommand DrawCommandsBuffer[MAX_DRAW_COMMANDS];
 
-			TestScenes::UTestScene_Cube TestScene;
+			TestScenes::UTestScene_Cube TestScene; 
 			//TestScenes::UTestScene_Rectangle TestScene;
 			
 			TestScene.GenerateDrawCommands(DrawCommandsBuffer, TotalTime, Width, Height);

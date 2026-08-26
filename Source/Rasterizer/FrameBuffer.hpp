@@ -1,14 +1,14 @@
 #pragma once
 
-#include "ImageView.hpp"
+#include "Image.hpp"
 #include "Color.hpp"
 
 namespace Rasterizer
 {
 	struct FFrameBuffer
 	{
-		FImageView<FColor4ub> Color;
-		FImageView<uint32_t> Depth;
+		FImage<FColor4ub> Color;
+		FImage<uint32_t> Depth;
 
 		uint32_t GetWidth() const
 		{

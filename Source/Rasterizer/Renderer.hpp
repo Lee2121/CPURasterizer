@@ -6,6 +6,6 @@
 
 namespace Rasterizer
 {
-	void Clear(const FRenderTarget& RenderTarget, const FVector4f& Color);
+	void Clear(FRenderTarget& RenderTarget, const FVector4f& Color, const uint32_t& Depth);
 	void Draw(const FRenderTarget& RenderTarget, const FDrawCommand& Command);	
 }
